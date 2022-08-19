@@ -156,8 +156,12 @@ begin
             json_table ( 
 	    l_body, '$[*]'
 	  columns ( 
-	        -- image is clob data type
-		name,image clob,image_name,mimetype,notes
+		name,
+		-- image is clob data type
+		image clob,
+		image_name,
+		mimetype,
+		notes
 	  )
 	);
 	commit;
@@ -277,7 +281,8 @@ END;
 
 ## 4. Then we can easily make a map application by using the Oracle APEX service in Oracle Cloud. The map is shown below
 
-![image](https://user-images.githubusercontent.com/33503189/185616726-8996c197-1a35-42aa-b217-cb7cf5bc4184.png)
+![image](https://user-images.githubusercontent.com/33503189/185690041-0801b04d-3672-4796-ad62-bc244e5204ad.png)
+
 
 
 Enjoy!  :)
