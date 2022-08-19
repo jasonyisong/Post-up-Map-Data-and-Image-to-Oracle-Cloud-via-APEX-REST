@@ -48,26 +48,50 @@ Mime Types Allowed: application/json
 Source:
 
 ```
-declare
-    l_body clob := :body_text;
-begin
-    if :key='your key' then
-	delete from map_data;
-	insert into map_data (name,city,region,location,venue,latitude,longitude) 
-	select name,city,region,location,venue,latitude,longitude
-	from json_table ( 
-	    l_body, '$[*]'
-	  columns ( 
-		name,city,region,location,venue,latitude,longitude
-	  )
-	);
-	commit;
-     end if;    
-     :output := 201;
-exception
-    when others then
+DECLARE
+    l_body CLOB := :body_text;
+BEGIN
+    IF :key = 'your key' THEN
+        DELETE FROM map_data;
+
+        INSERT INTO map_data (
+            name,
+            city,
+            region,
+            location,
+            venue,
+            latitude,
+            longitude
+        )
+            SELECT
+                name,
+                city,
+                region,
+                location,
+                venue,
+                latitude,
+                longitude
+            FROM
+                JSON_TABLE ( l_body, '$[*]'
+                    COLUMNS (
+                        name,
+                        city,
+                        region,
+                        location,
+                        venue,
+                        latitude,
+                        longitude
+                    )
+                );
+
+        COMMIT;
+    END IF;
+
+    :output := 201;
+EXCEPTION
+    WHEN OTHERS THEN
         :output := 400;
-end;
+END;
 ```
 
 Parameters:
@@ -90,9 +114,21 @@ declare
     l_body clob := :body_text;
 begin
     if :key='your key' then
-	insert into venue (name,image,image_name,mimetype,notes) 
-	select name,apex_web_service.clobbase642blob(image) image,image_name,mimetype,notes
-	from json_table ( 
+    INSERT INTO venue (
+        name,
+        image,
+        image_name,
+        mimetype,
+        notes
+    )
+        SELECT
+            name,
+            apex_web_service.clobbase642blob(image) image,
+            image_name,
+            mimetype,
+            notes
+        FROM
+            json_table ( 
 	    l_body, '$[*]'
 	  columns ( 
 		name,image clob,image_name,mimetype,notes
@@ -100,11 +136,10 @@ begin
 	);
 	commit;
     end if;
-    :output := 201;
-exception
-    when others then
+    :output := 201; EXCEPTION
+    WHEN OTHERS THEN
         :output := 400;
-end;
+END;
 ```
 
 Parameters:
@@ -119,50 +154,73 @@ Parameters:
 Upload MAP_DATA process
 
 ```
-declare
-    l_clob clob;
-    l_body_clob clob;
-begin
-    apex_web_service.g_request_headers.delete();
+DECLARE
+    l_clob      CLOB;
+    l_body_clob CLOB;
+BEGIN
+    apex_web_service.g_request_headers.DELETE();
     apex_web_service.g_request_headers(1).name := 'key';
     apex_web_service.g_request_headers(1).value := 'your key';
     apex_web_service.g_request_headers(2).name := 'content-type';
     apex_web_service.g_request_headers(2).value := 'application/json';
-    
-    select json_arrayagg(json_object(name,city,region,location,venue,latitude,longitude) returning clob) 
-    into l_body_clob 
-    from map_data;
-  
+    SELECT
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                name,
+                city,
+                region,
+                location,
+                venue,
+                latitude,
+                longitude
+            )
+        RETURNING CLOB)
+    INTO l_body_clob
+    FROM
+        map_data;
+
     l_clob := apex_web_service.make_rest_request(
-	    p_url         => 'your oracle cloud full url',
+            p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
 	    p_body=> l_body_clob
     );
-end;
+
+END;
 ```
 
 Upload VENUE process
 
 ```
-declare
-    l_clob clob;
-    l_body_clob clob;
-begin
-    apex_web_service.g_request_headers.delete();
+DECLARE
+    l_clob      CLOB;
+    l_body_clob CLOB;
+BEGIN
+    apex_web_service.g_request_headers.DELETE();
     apex_web_service.g_request_headers(1).name := 'pwd';
     apex_web_service.g_request_headers(1).value := 'your key';
     apex_web_service.g_request_headers(2).name := 'content-type';
     apex_web_service.g_request_headers(2).value := 'application/json';
-    select json_arrayagg(json_object(name,'image' value apex_web_service.blob2clobbase64(image) returning clob,image_name,mimetype,notes) returning clob) 
-    into l_body_clob
-    from venue ;
-  
+    SELECT
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                name,
+                'image' value apex_web_service.blob2clobbase64(image) returning clob,
+                image_name,
+                mimetype,
+                notes
+            )
+        RETURNING CLOB)
+    INTO l_body_clob
+    FROM
+        venue;
+
     l_clob := apex_web_service.make_rest_request(
-	    p_url         => 'your oracle cloud full url',
+    	    p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
 	    p_body=> l_body_clob
     );
-end;
+
+END;
 
 ```
 
