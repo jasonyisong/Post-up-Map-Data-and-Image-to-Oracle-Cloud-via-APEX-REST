@@ -219,7 +219,7 @@ BEGIN
     l_clob := apex_web_service.make_rest_request(
             p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
-	    p_body=> l_body_clob
+	    p_body        => l_body_clob
     );
 
     -- Get the returned status code
@@ -265,7 +265,7 @@ BEGIN
     l_clob := apex_web_service.make_rest_request(
     	    p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
-	    p_body=> l_body_clob
+	    p_body        => l_body_clob
     );
     
     -- Get the returned status code
