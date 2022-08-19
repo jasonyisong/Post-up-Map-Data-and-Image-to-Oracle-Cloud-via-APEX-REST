@@ -7,7 +7,7 @@ The universtiy asked the students to develop a map page containing information a
 
 # Solution (By using Oracle APEX Service in Oracle CLoud) : 
 
-1. Create the same table structure in Oracle Cloud Database as the local tables.
+## 1. Create the same table structure in Oracle Cloud Database as the local tables.
 
 ```
 CREATE TABLE  "MAP_DATA" 
@@ -37,9 +37,9 @@ CREATE TABLE  "VENUE"
 /
 ```
 
-2. Create Module / Resource / Handler by using APEX RESTful Data Services in Oracle Cloud
+## 2. Create Module / Resource / Handler by using APEX RESTful Data Services in Oracle Cloud
 
-1) The first URI is MAP_DAT 
+#### 2.1 The first URI is MAP_DAT 
 
 Method: POST \
 Source Type: PL/SQL \
@@ -78,11 +78,7 @@ Parameters:
 |output|output       |OUT          |HTTP HEADER|INTEGER  |        |
 
 
-
-
-
-
-2) The second URI is VENUE 
+#### 2.2 The second URI is VENUE 
 
 Method: POST \
 Source Type: PL/SQL \
@@ -122,7 +118,7 @@ Parameters:
 |key   |key          |IN           |HTTP HEADER|STRING   |        |
 |output|output       |OUT          |HTTP HEADER|INTEGER  |        |
 
-3. Write the PL/SQL process in the local APEX page so that the user can click the submit button to upload the data.
+## 3. Write the PL/SQL process in the local APEX page so that the user can click the submit button to upload the data.
 
 Upload MAP_DATA process
 
@@ -174,7 +170,7 @@ end;
 
 ```
 
-5. The MAP Show
+## 4. The MAP Show
 
 
 Enjoy!  :)
