@@ -39,7 +39,7 @@ CREATE TABLE  "VENUE"
 
 2. Create Module / Resource / Handler by using APEX RESTful Data Services in Oracle Cloud
 
-The first URI is MAP_DAT 
+1) The first URI is MAP_DAT 
 
 Method: POST \
 Source Type: PL/SQL \
@@ -78,7 +78,11 @@ Parameters:
 |output|output       |OUT          |HTTP HEADER|INTEGER  |        |
 
 
-The second URI is VENUE 
+
+
+
+
+2) The second URI is VENUE 
 
 Method: POST \
 Source Type: PL/SQL \
