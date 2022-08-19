@@ -42,7 +42,7 @@ Notes: This data structure is for demonstration purposes only. If used as a prod
 
 ## 2. Create Module / Resource / Handler by using APEX RESTful Data Services in Oracle Cloud
 
-#### 2.1 The first URI is MAP_DAT 
+#### 2.1 The first URI is MAP_DATA 
 
 Method: POST \
 Source Type: PL/SQL \
