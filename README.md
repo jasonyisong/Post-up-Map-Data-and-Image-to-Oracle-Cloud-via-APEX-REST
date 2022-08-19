@@ -274,7 +274,7 @@ END;
 
 ```
 
-## 4. The MAP Show
+## 4. Then we can easily make a map application by using the Oracle APEX service in Oracle Cloud. The map is shown below
 
 ![image](https://user-images.githubusercontent.com/33503189/185616726-8996c197-1a35-42aa-b217-cb7cf5bc4184.png)
 
