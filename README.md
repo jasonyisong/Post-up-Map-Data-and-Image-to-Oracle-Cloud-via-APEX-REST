@@ -38,6 +38,7 @@ CREATE TABLE  "VENUE"
    )  DEFAULT COLLATION "USING_NLS_COMP"
 /
 ```
+Notes: This data structure is for demonstration purposes only. If used as a production system, it is best to create a foreign key in the MAP_DATA table to associate with the ID of the VENUE table.
 
 ## 2. Create Module / Resource / Handler by using APEX RESTful Data Services in Oracle Cloud
 
