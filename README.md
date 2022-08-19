@@ -49,21 +49,21 @@ Source:
 
 ```
 declare
-l_body clob := :body_text;
+    l_body clob := :body_text;
 begin
-if :key='your key' then
-    delete from map_data;
-    insert into map_data (name,city,region,location,venue,latitude,longitude) 
-    select name,city,region,location,venue,latitude,longitude
-    from json_table ( 
-            l_body, '$[*]'
-          columns ( 
-                name,city,region,location,venue,latitude,longitude
-          )
-        );
-    commit;
-end if;
-:output := 201;
+    if :key='your key' then
+	delete from map_data;
+	insert into map_data (name,city,region,location,venue,latitude,longitude) 
+	select name,city,region,location,venue,latitude,longitude
+	from json_table ( 
+	    l_body, '$[*]'
+	  columns ( 
+		name,city,region,location,venue,latitude,longitude
+	  )
+	);
+	commit;
+     end if;    
+     :output := 201;
 exception
     when others then
         :output := 400;
@@ -87,24 +87,20 @@ Mime Types Allowed: application/json
 Source:
 ```
 declare
-l_body clob := :body_text;
+    l_body clob := :body_text;
 begin
-if :key='your key' then
-    insert into venue (name,image,image_name,mimetype,notes) 
-    select name,apex_web_service.clobbase642blob(image) image,image_name,mimetype,notes
-    from json_table ( 
-            l_body, '$[*]'
-          columns ( 
-                name, 
-                image clob,
-                image_name,
-                mimetype,
-                notes
-          )
-        );
-    commit;
-end if;
-:output := 201;
+    if :key='your key' then
+	insert into venue (name,image,image_name,mimetype,notes) 
+	select name,apex_web_service.clobbase642blob(image) image,image_name,mimetype,notes
+	from json_table ( 
+	    l_body, '$[*]'
+	  columns ( 
+		name,image clob,image_name,mimetype,notes
+	  )
+	);
+	commit;
+    end if;
+    :output := 201;
 exception
     when others then
         :output := 400;
@@ -124,8 +120,8 @@ Upload MAP_DATA process
 
 ```
 declare
-l_clob clob;
-l_body_clob clob;
+    l_clob clob;
+    l_body_clob clob;
 begin
     apex_web_service.g_request_headers.delete();
     apex_web_service.g_request_headers(1).name := 'key';
@@ -149,8 +145,8 @@ Upload VENUE process
 
 ```
 declare
-l_clob clob;
-l_body_clob clob;
+    l_clob clob;
+    l_body_clob clob;
 begin
     apex_web_service.g_request_headers.delete();
     apex_web_service.g_request_headers(1).name := 'pwd';
