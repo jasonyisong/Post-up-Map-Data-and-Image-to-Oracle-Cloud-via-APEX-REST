@@ -235,10 +235,10 @@ DECLARE
     l_body_clob CLOB;
 BEGIN
     apex_web_service.g_request_headers.DELETE();
-    apex_web_service.g_request_headers(1).name := 'pwd';
-    apex_web_service.g_request_headers(1).value := 'your key';
-    apex_web_service.g_request_headers(2).name := 'content-type';
-    apex_web_service.g_request_headers(2).value := 'application/json';
+    apex_web_service.g_request_headers(1).name := 'content-type';
+    apex_web_service.g_request_headers(1).value := 'application/json';
+    apex_web_service.g_request_headers(2).name := 'pwd';
+    apex_web_service.g_request_headers(2).value := 'your key';
     
     -- Query all data to json format
     SELECT
