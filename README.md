@@ -4,9 +4,9 @@ Upload Local Table Data to Cloud DB by using Oracle APEX.
 Created by Yi Song 2022.08.19
 
 
-# How to post up the map data and images from local Oracle Database tables to Oracle Cloud DB, so that everyone can easily view map information on the Cloud.
+# How to post up the map data and images from local Oracle database tables to Oracle Cloud DB and easily view and share location information and venue images on maps in the cloud.
 
-By using Oracle APEX Service in Oracle CLoud
+Easy solution with Oracle APEX services in Oracle CLoud.
 
 ## 1. Create the same table structure in Oracle Cloud Database as the local tables.
 
