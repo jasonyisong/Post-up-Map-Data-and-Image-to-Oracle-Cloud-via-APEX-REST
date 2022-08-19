@@ -7,7 +7,7 @@ Created by Yi Song 2022.08.19
 The universtiy asked the students to develop a map page containing information about the universtiy's location and pictures that existed in the universtiy's local database, and wanted to share the map with the incoming students, so they wanted to upload the data to the cloud so that everyone could easily view it through the map. 
 
 
-# Solution (By using Oracle APEX Service in Oracle CLoud) : 
+# My Solution (By using Oracle APEX Service in Oracle CLoud) : 
 
 ## 1. Create the same table structure in Oracle Cloud Database as the local tables.
 
