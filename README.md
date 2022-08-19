@@ -63,7 +63,7 @@ BEGIN
     	-- Delete all records first
         DELETE FROM map_data;
 
-	-- Insert MAP DATA from Json
+	-- Insert MAP_DATA table from json clob
         INSERT INTO map_data (
             name,
             city,
@@ -136,7 +136,7 @@ begin
     -- Delete all records first
     DELETE FROM venue;
     
-    -- Insert VENUE from Json
+    -- Insert VENUE table from json clob
     INSERT INTO venue (
         name,
         image,
@@ -146,7 +146,7 @@ begin
     )
         SELECT
             name,
-	    -- Convert clobbase64 to blob
+	    -- Convert image clobbase64 to blob
             apex_web_service.clobbase642blob(image) image, 
             image_name,
             mimetype,
@@ -155,6 +155,7 @@ begin
             json_table ( 
 	    l_body, '$[*]'
 	  columns ( 
+	        -- image is clob data type
 		name,image clob,image_name,mimetype,notes
 	  )
 	);
@@ -187,10 +188,12 @@ DECLARE
     l_body_clob CLOB;
 BEGIN
     apex_web_service.g_request_headers.DELETE();
-    apex_web_service.g_request_headers(1).name := 'key';
-    apex_web_service.g_request_headers(1).value := 'your key';
-    apex_web_service.g_request_headers(2).name := 'content-type';
-    apex_web_service.g_request_headers(2).value := 'application/json';
+    apex_web_service.g_request_headers(1).name := 'content-type';
+    apex_web_service.g_request_headers(1).value := 'application/json';
+    apex_web_service.g_request_headers(2).name := 'key';
+    apex_web_service.g_request_headers(2).value := 'your key';
+    
+    -- Query all data to json format
     SELECT
         JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -207,12 +210,14 @@ BEGIN
     FROM
         map_data;
 
+    -- Post the json content to Oracle Cloud
     l_clob := apex_web_service.make_rest_request(
             p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
 	    p_body=> l_body_clob
     );
 
+    -- Get the returned status code
     IF apex_web_service.g_status_code = 100 THEN
         :P_MSG:='SUCCESS';
     ELSE
@@ -234,10 +239,13 @@ BEGIN
     apex_web_service.g_request_headers(1).value := 'your key';
     apex_web_service.g_request_headers(2).name := 'content-type';
     apex_web_service.g_request_headers(2).value := 'application/json';
+    
+    -- Query all data to json format
     SELECT
         JSON_ARRAYAGG(
             JSON_OBJECT(
                 name,
+		-- Covert blob image to clobbase64
                 'image' value apex_web_service.blob2clobbase64(image) returning clob,
                 image_name,
                 mimetype,
@@ -248,12 +256,14 @@ BEGIN
     FROM
         venue;
 
+    -- Post the json content to Oracle Cloud
     l_clob := apex_web_service.make_rest_request(
     	    p_url         => 'your oracle cloud full url',
 	    p_http_method => 'post',
 	    p_body=> l_body_clob
     );
     
+    -- Get the returned status code
     IF apex_web_service.g_status_code = 100 THEN
         :P_MSG:='SUCCESS';
     ELSE
