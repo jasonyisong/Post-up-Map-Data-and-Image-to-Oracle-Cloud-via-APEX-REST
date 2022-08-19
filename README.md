@@ -51,12 +51,19 @@ Source:
 
 ```
 DECLARE
+    -- The post json data content
     l_body CLOB := :body_text;
 BEGIN
+    -- Init status
     :output := 0;
+    
+    -- If you have the key, you can post the data
     IF :key = 'your key' THEN
+    
+    	-- Delete all records first
         DELETE FROM map_data;
 
+	-- Insert MAP DATA from Json
         INSERT INTO map_data (
             name,
             city,
@@ -88,11 +95,14 @@ BEGIN
                 );
 
         COMMIT;
+	
+	-- If insert successful, output status
 	:output := 100;
     END IF;
     
 EXCEPTION
     WHEN OTHERS THEN
+        -- If error, output status 
         :output := 400;
 END;
 ```
@@ -114,10 +124,19 @@ Mime Types Allowed: application/json
 Source:
 ```
 declare
+    -- The post json data content
     l_body clob := :body_text;
 begin
+    -- Init status
     :output := 0;
+    
+    -- If you have the key, you can post the data
     if :key='your key' then
+    
+    -- Delete all records first
+    DELETE FROM venue;
+    
+    -- Insert VENUE from Json
     INSERT INTO venue (
         name,
         image,
@@ -127,7 +146,8 @@ begin
     )
         SELECT
             name,
-            apex_web_service.clobbase642blob(image) image,
+	    -- Convert clobbase64 to blob
+            apex_web_service.clobbase642blob(image) image, 
             image_name,
             mimetype,
             notes
@@ -139,11 +159,13 @@ begin
 	  )
 	);
 	commit;
+	-- If insert successful, output status
 	:output := 100;
     end if;
  
 EXCEPTION
     WHEN OTHERS THEN
+    	-- If error, output status
         :output := 400;
 END;
 ```
