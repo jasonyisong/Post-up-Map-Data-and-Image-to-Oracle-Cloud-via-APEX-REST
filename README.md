@@ -53,6 +53,7 @@ Source:
 DECLARE
     l_body CLOB := :body_text;
 BEGIN
+    :output := 0;
     IF :key = 'your key' THEN
         DELETE FROM map_data;
 
@@ -87,9 +88,9 @@ BEGIN
                 );
 
         COMMIT;
+	:output := 100;
     END IF;
-
-    :output := 201;
+    
 EXCEPTION
     WHEN OTHERS THEN
         :output := 400;
@@ -101,7 +102,7 @@ Parameters:
 |Name  |Bind Variable|Access Method|Source Type|Data Type|Comments|
 |------|-------------|-------------|-----------|---------|--------|
 |key   |key          |IN           |HTTP HEADER|STRING   |        |
-|output|output       |OUT          |HTTP HEADER|INTEGER  |        |
+|output|output       |OUT          |RESPONSE   |INTEGER  |        |
 
 
 #### 2.2 The second URI is VENUE 
@@ -115,6 +116,7 @@ Source:
 declare
     l_body clob := :body_text;
 begin
+    :output := 0;
     if :key='your key' then
     INSERT INTO venue (
         name,
@@ -137,8 +139,10 @@ begin
 	  )
 	);
 	commit;
+	:output := 100;
     end if;
-    :output := 201; EXCEPTION
+ 
+EXCEPTION
     WHEN OTHERS THEN
         :output := 400;
 END;
@@ -149,7 +153,7 @@ Parameters:
 |Name  |Bind Variable|Access Method|Source Type|Data Type|Comments|
 |------|-------------|-------------|-----------|---------|--------|
 |key   |key          |IN           |HTTP HEADER|STRING   |        |
-|output|output       |OUT          |HTTP HEADER|INTEGER  |        |
+|output|output       |OUT          |RESPONSE  |INTEGER  |        |
 
 ## 3. Write the PL/SQL process in the local APEX page so that the user can click the submit button to upload the data.
 
@@ -187,6 +191,12 @@ BEGIN
 	    p_body=> l_body_clob
     );
 
+    IF apex_web_service.g_status_code = 100 THEN
+        :P_MSG:='SUCCESS';
+    ELSE
+        :P_MSG:='ERROR:' || apex_web_service.g_status_code;
+    END IF;
+
 END;
 ```
 
@@ -221,7 +231,13 @@ BEGIN
 	    p_http_method => 'post',
 	    p_body=> l_body_clob
     );
-
+    
+    IF apex_web_service.g_status_code = 100 THEN
+        :P_MSG:='SUCCESS';
+    ELSE
+        :P_MSG:='ERROR:' || apex_web_service.g_status_code;
+    END IF;
+    
 END;
 
 ```
