@@ -1,6 +1,7 @@
 # Post-up-MAP-Data-and-Image-to-Cloud-DB-via-REST
-Upload Local Table Data to Cloud DB by using Oracle APEX
-Create by Yi Song 2022.08.19
+Upload Local Table Data to Cloud DB by using Oracle APEX.
+
+Created by Yi Song 2022.08.19
 
 # Scenario : 
 The universtiy asked the students to develop a map page containing information about the universtiy's location and pictures that existed in the universtiy's local database, and wanted to share the map with the incoming students, so they wanted to upload the data to the cloud so that everyone could easily view it through the map. 
